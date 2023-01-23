@@ -18,6 +18,37 @@ Workflow:
 #
 Event used for Workflow is push.
 
+```
+name: CICD
+
+on : push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout of repo
+        uses: actions/checkout@v2
+
+      - name: runing the python code
+        run : python hello.py
+
+  job2:
+    needs: [job1]
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_NAME: python-script-
+    steps:
+      - name: checkout of repo
+        uses: actions/checkout@v2
+      
+      - name: artifact creation
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ./hello.py
+```
+
 Contains 2 jobs: 
 
 job1- Checkout the repository and run python script.
